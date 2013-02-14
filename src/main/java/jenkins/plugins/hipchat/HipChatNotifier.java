@@ -78,8 +78,11 @@ public class HipChatNotifier extends Notifier {
 
     public HipChatService newHipChatService(final String room, final String failRoom) {
         String rooms = room == null ? getRoom() : room;
-        if (failRoom != null && failRoom.length() > 0)
+        if (failRoom != null && failRoom.length() > 0) {
+          // do not print the same message twice to the same room
+          if (!rooms.equals(failRoom))
             rooms += ","+failRoom;
+        }
         return new StandardHipChatService(getAuthToken(), rooms, getSendAs() == null ? "Build Server" : getSendAs());
     }
 
